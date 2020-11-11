@@ -30,12 +30,9 @@
         <td><c:out value="${product.getPrice()}"></c:out></td>
         <td><c:out value="${product.getColor()}"></c:out></td>
         <td><c:out value="${product.getDescription()}"></c:out></td>
-        <td><c:out value="${product.getCategory().getName()}"></c:out></td>
+        <td><c:out value="${product.getCategory().getCatName()}"></c:out></td>
     </tr>
     </c:forEach>
-
 </table>
-
-
 </body>
 </html>

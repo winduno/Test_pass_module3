@@ -31,6 +31,9 @@ public class ProductServlet extends javax.servlet.http.HttpServlet {
                 break;
             case "delete":
                 break;
+            default:
+                listProduct(request,response);
+                break;
         }
     }
 
@@ -39,7 +42,8 @@ public class ProductServlet extends javax.servlet.http.HttpServlet {
         float price = Float.parseFloat(request.getParameter("price"));
         String color = request.getParameter("color");
         String description = request.getParameter("description");
-        int catId = service.getCategoryByName(request.getParameter("category")).getCatId();
+        String catName = request.getParameter("category");
+        int catId = service.getCategoryByName(catName).getCatId();
 
         Product product = new Product(name, price, color, description, catId);
         this.service.createProduct(product);

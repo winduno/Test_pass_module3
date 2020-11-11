@@ -6,7 +6,7 @@ String name;
 float price;
 String color;
 String description;
-Category category;
+Category category = new Category();
 
     public Product() {
     }

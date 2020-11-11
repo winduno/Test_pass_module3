@@ -106,9 +106,11 @@ public class ProductService implements IProductService {
     public Category getCategoryByName(String catName) {
         Category category = null;
         Connection connection = ConnectDB.getInstance().getConnection();
+        String sql = "select * from category where catName = ?;";
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from category where catNam = " + catName);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, catName);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 int catId = resultSet.getInt("id");
                 category = new Category(catId, catName);
@@ -138,11 +140,12 @@ public class ProductService implements IProductService {
         return categoryList;
     }
 
-    public static void main(String[] args) {
-        ProductService service = new ProductService();
-        List<Category> list = service.getAllCategories();
-        System.out.println(list.get(1).getCatName());
-    }
+//    public static void main(String[] args) {
+//        ProductService service = new ProductService();
+//        List<Category> list = service.getAllCategories();
+//        Category category = service.getCategoryByName("iphone");
+//        System.out.println(category.getCatId());
+//    }
 
     @Override
     public void createProduct(Product product) {

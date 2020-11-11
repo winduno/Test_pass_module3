@@ -37,9 +37,7 @@
             </tr>
             <tr>
                 <td>Category:</td>
-                <c:forEach items="categoryList" var="category">
-                    <td><c:out value="${category.getCatName()}"></c:out></td>
-                </c:forEach>
+                <td><input type="text" name="category" id="category"></td>
             </tr>
         </table>
         <input type="submit" value="Create Product">
