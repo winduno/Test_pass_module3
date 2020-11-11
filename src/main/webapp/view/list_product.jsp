@@ -46,7 +46,7 @@
         <td><c:out value="${product.getQuantity()}"></c:out></td>
         <td><c:out value="${product.getDescription()}"></c:out></td>
         <td><c:out value="${product.getCategory().getCatName()}"></c:out></td>
-        <td><a href="/products" action="edit" name="id" value="${product.getId()}">Edit</a> <a href="/products" action="delete" name="id" value="${product.getId()}">Delete</a></td>
+        <td><a href="/products?action=edit&id=${product.getId()}">Edit</a> <a href="/products?action=delete&id=${product.getId()}">Delete</a></td>
     </tr>
     </c:forEach>
 </table>

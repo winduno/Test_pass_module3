@@ -33,7 +33,7 @@
             </tr>
             <tr>
                 <td>Quantity:</td>
-                <td><input type="text" name="quantity" id="quantity"></td>
+                <td><input type="number" name="quantity" id="quantity"></td>
             </tr>
             <tr>
                 <td>Description:</td>

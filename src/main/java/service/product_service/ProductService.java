@@ -157,7 +157,7 @@ public class ProductService implements IProductService {
     @Override
     public void createProduct(Product product) {
         Connection connection = ConnectDB.getInstance().getConnection();
-        String sql = "insert into product (name, price, color, quantiry, description, catId) values (?, ?, ?, ?, ?, ?);";
+        String sql = "insert into product (name, price, color, quantity, description, catId) values (?, ?, ?, ?, ?, ?);";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, product.getName());

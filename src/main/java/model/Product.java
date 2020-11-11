@@ -19,9 +19,19 @@ Category category = new Category();
         this.color = color;
         this.description = description;
         this.category = category;
+        this.quantity = quantity;
     }
 
     public Product(String name, float price, String color, int quantity, String description, int catId) {
+        this.name = name;
+        this.price = price;
+        this.color = color;
+        this.description = description;
+        this.category.setCatId(catId);
+        this.quantity = quantity;
+    }
+    public Product(int id, String name, float price, String color, int quantity, String description, int catId) {
+        this.id=id;
         this.name = name;
         this.price = price;
         this.color = color;

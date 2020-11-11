@@ -28,7 +28,7 @@ public class ProductServlet extends javax.servlet.http.HttpServlet {
                 createProduct(request, response);
                 break;
             case "edit":
-
+                editProduct(request, response);
                 break;
             case "delete":
                 deleteProduct(request,response);
@@ -39,8 +39,47 @@ public class ProductServlet extends javax.servlet.http.HttpServlet {
         }
     }
 
+    private void editProduct(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String name = request.getParameter("name");
+        float price = Float.parseFloat(request.getParameter("price"));
+        String color = request.getParameter("color");
+        String description = request.getParameter("description");
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        String catName = request.getParameter("category");
+        int catId = service.getCategoryByName(catName).getCatId();
+
+        Product product = new Product(id, name, price, color, quantity, description, catId);
+        this.service.editProduct(product);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/view/edit_product.jsp");
+        try {
+            dispatcher.forward(request,response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showEditProduct(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Product product = service.searchProductByID(id);
+        request.setAttribute("editProduct", product);
+        List<Category> categoryList = service.getAllCategories();
+        request.setAttribute("categoryList", categoryList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/view/edit_product.jsp");
+        try {
+            dispatcher.forward(request,response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void deleteProduct(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("value"));
+        int id = Integer.parseInt(request.getParameter("id"));
         service.deleteProduct(id);
         List<Product> productList = service.searchAllProduct();
         request.setAttribute("productList", productList);
@@ -86,6 +125,7 @@ public class ProductServlet extends javax.servlet.http.HttpServlet {
                 formCreate(request, response);
                 break;
             case "edit":
+                showEditProduct(request,response);
                 break;
             case "delete":
                 deleteProduct(request,response);
