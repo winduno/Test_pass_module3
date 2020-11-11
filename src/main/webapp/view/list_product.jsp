@@ -28,6 +28,9 @@
 <p>
     <a href="/products?action=create">Create Product</a>
 </p>
+<form action="/products?action=search" method="post">
+    <input type="text" placeholder="Search here" name="search" id="search"><input type="submit" value="Search">
+</form>
 <table>
     <tr>
         <th>Name</th>

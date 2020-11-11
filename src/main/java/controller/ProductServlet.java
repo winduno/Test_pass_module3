@@ -33,9 +33,48 @@ public class ProductServlet extends javax.servlet.http.HttpServlet {
             case "delete":
                 deleteProduct(request,response);
                 break;
+            case "search":
+                searchProduct(request,response);
             default:
 //                listProduct(request,response);
                 break;
+        }
+    }
+
+
+    protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+        String action = request.getParameter("action");
+        if (action==null){
+            action = "";
+        }
+        switch (action){
+            case "create":
+                formCreate(request, response);
+                break;
+            case "edit":
+                showEditProduct(request,response);
+                break;
+            case "delete":
+                deleteProduct(request,response);
+                break;
+            default:
+                listProduct(request,response);
+        }
+    }
+
+    private void searchProduct(HttpServletRequest request, HttpServletResponse response) {
+        String name = request.getParameter("search");
+        Product product = service.getProductByName(name);
+        List<Product> productList = new ArrayList<>();
+        productList.add(product);
+        request.setAttribute("productList", productList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/view/list_product.jsp");
+        try {
+            dispatcher.forward(request,response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -52,7 +91,7 @@ public class ProductServlet extends javax.servlet.http.HttpServlet {
         Product product = new Product(id, name, price, color, quantity, description, catId);
         this.service.editProduct(product);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/view/edit_product.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/view/list_product.jsp");
         try {
             dispatcher.forward(request,response);
         } catch (ServletException e) {
@@ -115,26 +154,6 @@ public class ProductServlet extends javax.servlet.http.HttpServlet {
         }
     }
 
-    protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-        String action = request.getParameter("action");
-        if (action==null){
-            action = "";
-        }
-        switch (action){
-            case "create":
-                formCreate(request, response);
-                break;
-            case "edit":
-                showEditProduct(request,response);
-                break;
-            case "delete":
-                deleteProduct(request,response);
-                break;
-            default:
-                listProduct(request,response);
-        }
-    }
-
     private void listProduct(HttpServletRequest request, HttpServletResponse response) {
         List<Product> productList = service.searchAllProduct();
         request.setAttribute("productList", productList);
@@ -146,7 +165,6 @@ public class ProductServlet extends javax.servlet.http.HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private void formCreate(HttpServletRequest request, HttpServletResponse response) {

@@ -14,4 +14,5 @@ public interface IProductService {
     void createProduct(Product product);
     Category getCategoryByName(String catName);
     List<Category> getAllCategories();
+    Product getProductByName(String productName);
 }

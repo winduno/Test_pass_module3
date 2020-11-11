@@ -147,6 +147,32 @@ public class ProductService implements IProductService {
         return categoryList;
     }
 
+    @Override
+    public Product getProductByName(String productName) {
+        Product product = null;
+        Connection connection = ConnectDB.getInstance().getConnection();
+        String sql = "select * from product where name = ?;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, productName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                float price = resultSet.getFloat("price");
+                String color = resultSet.getString("color");
+                int quantity = resultSet.getInt("quantity");
+                String description = resultSet.getString("description");
+                int catId = resultSet.getInt("catId");
+
+                product = new Product(id, name, price, color, quantity, description, getCategoryById(catId));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return product;
+    }
+
 //    public static void main(String[] args) {
 //        ProductService service = new ProductService();
 //        List<Category> list = service.getAllCategories();
