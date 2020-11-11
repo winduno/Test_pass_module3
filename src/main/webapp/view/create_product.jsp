@@ -37,7 +37,14 @@
             </tr>
             <tr>
                 <td>Category:</td>
-                <td><input type="text" name="category" id="category"></td>
+<%--                <td><input type="text" name="category" id="category"></td>--%>
+                <td>
+                    <select name="category" id="category">
+                        <c:forEach items="${categoryList}" var="category">
+                            <option value="${category.getCatName()}">${category.getCatName()}</option>
+                        </c:forEach>
+                    </select>
+                </td>
             </tr>
         </table>
         <input type="submit" value="Create Product">

@@ -32,7 +32,7 @@ public class ProductServlet extends javax.servlet.http.HttpServlet {
             case "delete":
                 break;
             default:
-                listProduct(request,response);
+//                listProduct(request,response);
                 break;
         }
     }
