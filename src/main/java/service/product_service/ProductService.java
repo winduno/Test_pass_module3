@@ -17,15 +17,16 @@ public class ProductService implements IProductService {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from product;");
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 float price = resultSet.getFloat("price");
                 String color = resultSet.getString("color");
+                int quantity = resultSet.getInt("quantity");
                 String description = resultSet.getString("description");
                 int catId = resultSet.getInt("catId");
 
-                productList.add(new Product(id, name, price, color, description, getCategoryById(catId)));
+                productList.add(new Product(id, name, price, color, quantity, description, getCategoryById(catId)));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -40,15 +41,16 @@ public class ProductService implements IProductService {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from product where id = " + productId);
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 float price = resultSet.getFloat("price");
                 String color = resultSet.getString("color");
+                int quantity = resultSet.getInt("quantity");
                 String description = resultSet.getString("description");
                 int catId = resultSet.getInt("catId");
 
-                product = new Product(id, name, price, color, description, getCategoryById(catId));
+                product = new Product(id, name, price, color, quantity, description, getCategoryById(catId));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -59,15 +61,16 @@ public class ProductService implements IProductService {
     @Override
     public void editProduct(Product product) {
         Connection connection = ConnectDB.getInstance().getConnection();
-        String sql = "update product set name = ?, price = ?, color = ?, description = ?, catId = ? where id = ?;";
+        String sql = "update product set name = ?, price = ?, color = ?, quantity = ?, description = ?, catId = ? where id = ?;";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(6, product.getId());
+            preparedStatement.setInt(7, product.getId());
             preparedStatement.setString(1, product.getName());
             preparedStatement.setFloat(2, product.getPrice());
             preparedStatement.setString(3, product.getColor());
-            preparedStatement.setString(4, product.getDescription());
-            preparedStatement.setInt(5, product.getCategory().getCatId());
+            preparedStatement.setInt(4, product.getQuantity());
+            preparedStatement.setString(5, product.getDescription());
+            preparedStatement.setInt(6, product.getCategory().getCatId());
             preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -77,9 +80,11 @@ public class ProductService implements IProductService {
     @Override
     public void deleteProduct(int productId) {
         Connection connection = ConnectDB.getInstance().getConnection();
+        String sql = "delete from product where id = ?";
         try {
-            Statement statement = connection.createStatement();
-            statement.execute("delete from product where id = " + productId);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, productId);
+            preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -89,10 +94,12 @@ public class ProductService implements IProductService {
     public Category getCategoryById(int catId) {
         Category category = null;
         Connection connection = ConnectDB.getInstance().getConnection();
+        String sql = "select * from category where id = ?;";
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from category where id = " + catId);
-            while (resultSet.next()){
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, catId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
                 String name = resultSet.getString("catName");
                 category = new Category(catId, name);
             }
@@ -111,7 +118,7 @@ public class ProductService implements IProductService {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, catName);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 int catId = resultSet.getInt("id");
                 category = new Category(catId, catName);
             }
@@ -128,7 +135,7 @@ public class ProductService implements IProductService {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from category;");
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String catName = resultSet.getString("catName");
 
@@ -150,14 +157,15 @@ public class ProductService implements IProductService {
     @Override
     public void createProduct(Product product) {
         Connection connection = ConnectDB.getInstance().getConnection();
-        String sql = "insert into product (name, price, color, description, catId) values (?, ?, ?, ?, ?);";
+        String sql = "insert into product (name, price, color, quantiry, description, catId) values (?, ?, ?, ?, ?, ?);";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setFloat(2, product.getPrice());
             preparedStatement.setString(3, product.getColor());
-            preparedStatement.setString(4, product.getDescription());
-            preparedStatement.setInt(5, product.getCategory().getCatId());
+            preparedStatement.setInt(4, product.getQuantity());
+            preparedStatement.setString(5, product.getDescription());
+            preparedStatement.setInt(6, product.getCategory().getCatId());
             preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

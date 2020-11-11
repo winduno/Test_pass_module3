@@ -28,12 +28,29 @@ public class ProductServlet extends javax.servlet.http.HttpServlet {
                 createProduct(request, response);
                 break;
             case "edit":
+
                 break;
             case "delete":
+                deleteProduct(request,response);
                 break;
             default:
 //                listProduct(request,response);
                 break;
+        }
+    }
+
+    private void deleteProduct(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("value"));
+        service.deleteProduct(id);
+        List<Product> productList = service.searchAllProduct();
+        request.setAttribute("productList", productList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/view/list_product.jsp");
+        try {
+            dispatcher.forward(request,response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -42,10 +59,11 @@ public class ProductServlet extends javax.servlet.http.HttpServlet {
         float price = Float.parseFloat(request.getParameter("price"));
         String color = request.getParameter("color");
         String description = request.getParameter("description");
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
         String catName = request.getParameter("category");
         int catId = service.getCategoryByName(catName).getCatId();
 
-        Product product = new Product(name, price, color, description, catId);
+        Product product = new Product(name, price, color, quantity, description, catId);
         this.service.createProduct(product);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/view/create_product.jsp");
@@ -70,6 +88,7 @@ public class ProductServlet extends javax.servlet.http.HttpServlet {
             case "edit":
                 break;
             case "delete":
+                deleteProduct(request,response);
                 break;
             default:
                 listProduct(request,response);

@@ -32,6 +32,10 @@
                 <td><input type="text" name="color" id="color"></td>
             </tr>
             <tr>
+                <td>Quantity:</td>
+                <td><input type="text" name="quantity" id="quantity"></td>
+            </tr>
+            <tr>
                 <td>Description:</td>
                 <td><input type="text" name="description" id="description"></td>
             </tr>
