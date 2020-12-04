@@ -15,9 +15,10 @@
 <p>
     <a href="/products">Back to list of products</a>
 </p>
-<form method="post" action="/products?action=edit&id=5">
+<form method="post" action="/products?action=edit">
     <fieldset>
         <legend>Insert Product Infor</legend>
+        <input type="hidded" name="id" value="${editProduct.getId()}">
         <table>
             <tr>
                 <td>Name:</td>

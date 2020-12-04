@@ -91,6 +91,9 @@ public class ProductServlet extends javax.servlet.http.HttpServlet {
         Product product = new Product(id, name, price, color, quantity, description, catId);
         this.service.editProduct(product);
 
+        List<Product> productList = service.searchAllProduct();
+        request.setAttribute("productList", productList);
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("/view/list_product.jsp");
         try {
             dispatcher.forward(request,response);
